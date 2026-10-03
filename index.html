@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUÍMICA - Biomoléculas, Estructura-Función y Metabolismo Intermediario (UCCuyo)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- KaTeX para renderizado de fórmulas químicas y biofísicas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Outfit & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f7f9f6;
+        }
+        /* Paleta Institucional Verde Oliva UCCuyo */
+        .text-accent { color: #436600; }
+        .bg-accent { background-color: #436600; }
+        .bg-accent-hover:hover { background-color: #324d00; }
+        .bg-accent-light { background-color: #f1f6eb; }
+        .border-accent { border-color: #436600; }
+
+        .text-primary { color: #436600; }
+        .bg-primary { background-color: #436600; }
+        .bg-primary-dark { background-color: #324d00; }
+        .border-primary { border-color: #436600; }
+
+        .focus-accent:focus {
+            border-color: #436600;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 102, 0, 0.2);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Cabecera Institucional UCCuyo -->
+    <header class="bg-white border-b border-gray-200 shadow-xs sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-white font-bold text-lg shadow-sm">
+                    Q
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-800 tracking-wide uppercase">QUÍMICA & BIOQUÍMICA</h1>
+                    <p class="text-xs text-gray-500 font-semibold">PreMédico (Facultad de Cs. Médicas - UCCuyo)</p>
+                </div>
+            </div>
+            <!-- Botón Guía de Uso -->
+            <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:opacity-90 transition">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Guía de Uso
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenido Principal con Menú Lateral -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Menú de Navegación Lateral -->
+        <nav class="w-full lg:w-64 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit">
+            <button onclick="switchTab(1)" id="btn-tab-1" class="bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition">
+                1. Carbono & Grupos
+            </button>
+            <button onclick="switchTab(2)" id="btn-tab-2" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                2. Matriz Biomoléculas
+            </button>
+            <button onclick="switchTab(3)" id="btn-tab-3" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                3. Familias & Falcemia
+            </button>
+            <button onclick="switchTab(4)" id="btn-tab-4" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                4. Geografía & Metabolismo
+            </button>
+            <button onclick="switchTab(5)" id="btn-tab-5" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                5. Síntesis & Laboratorio
+            </button>
+        </nav>
+
+        <!-- Contenedores de Sección -->
+        <div class="flex-1 overflow-hidden space-y-6">
+
+            <!-- ==================== MÓDULO 1: CARBONO & GRUPOS FUNCIONALES ==================== -->
+            <section id="module-1" class="module-content block space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md border border-accent/20">Módulo 1</span>
+                            <h2 class="text-xl font-bold text-gray-800 mt-1">El Tablero de Juego: Carbono y Grupos Funcionales</h2>
+                        </div>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-xl border border-slate-200">
+                            Hibridación $sp^3$ y Tetraedro ($109.5^\circ$)
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        El esqueleto hidrocarbonado tetravalente constituye el andamiaje estructural inerte de las biomoléculas. Los grupos funcionales (amino, carboxilo, hidroxilo, fosfato) aportan la "personalidad" química: polaridad, densidad de carga e interacción con el solvente acuoso.
+                    </p>
+                </div>
+
+                <!-- Canvas y Controles Módulo 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Simulador Molecular: Tetravalencia & Solvatación</h3>
+                            <span class="text-xs text-gray-500">Alterne los sustituyentes para explorar la geometría tridimensional y la interacción con el agua dipolar.</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="setMod1Sub('metano')" id="btn-m1-metano" class="px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm">Metano ($CH_4$)</button>
+                            <button onclick="setMod1Sub('amino')" id="btn-m1-amino" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Amina ($R-NH_2$)</button>
+                            <button onclick="setMod1Sub('carboxilo')" id="btn-m1-carboxilo" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Carboxilo ($R-COOH$)</button>
+                            <button onclick="setMod1Sub('alcohol')" id="btn-m1-alcohol" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Alcohol ($R-OH$)</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Mod 1 -->
+                    <div class="relative w-full h-[420px] rounded-xl overflow-hidden bg-slate-900 shadow-inner flex items-center justify-center">
+                        <canvas id="canvasModule1" class="w-full h-full cursor-pointer"></canvas>
+                    </div>
+                    <div class="bg-white/95 border border-gray-200 p-2.5 rounded-xl text-xs shadow-sm flex items-center gap-2">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent flex-shrink-0"></span>
+                        <span id="m1-canvas-legend" class="font-bold text-accent">Metano ($CH_4$): Molécula apolar simétrica. Interacciones de Van der Waals débiles e hidrofobia.</span>
+                    </div>
+
+                    <!-- Tarjetas de Modulación Biofísica -->
+                    <div id="m1-detail-box" class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                        <div class="p-3.5 rounded-xl bg-gray-50 border border-gray-200">
+                            <span class="font-bold text-accent text-xs block mb-1">Polaridad Molecular</span>
+                            <p id="m1-pol-text" class="text-[11px] text-gray-600">Nula (Apolar). La simetría tetraédrica anula los momentos dipolares individuales $C-H$.</p>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-gray-50 border border-gray-200">
+                            <span class="font-bold text-blue-700 text-xs block mb-1">Carga Neta ($pH$ 7.4)</span>
+                            <p id="m1-charge-text" class="text-[11px] text-gray-600">Neutra ($q = 0$). No intercambia protones a pH fisiológico tisular.</p>
+                        </div>
+                        <div class="p-3.5 rounded-xl bg-gray-50 border border-gray-200">
+                            <span class="font-bold text-emerald-700 text-xs block mb-1">Comportamiento en Agua</span>
+                            <p id="m1-water-text" class="text-[11px] text-gray-600">Hidrofóbico. Excluido por la red de puentes de hidrógeno del agua (~75% corporal).</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 2: CONTEXTO BIOFÍSICO & MATRIZ ==================== -->
+            <section id="module-2" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md border border-accent/20">Módulo 2</span>
+                            <h2 class="text-xl font-bold text-gray-800 mt-1">Contexto Biofísico y Matriz de Biomoléculas</h2>
+                        </div>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-xl border border-slate-200">
+                            Agua: ~75% Peso Corporal
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        El agua es el solvente universal que dicta las leyes termodinámicas de la vida: efecto hidrofóbico, puentes de hidrógeno y autoensamblaje supramolecular de las cuatro familias de biomoléculas.
+                    </p>
+                </div>
+
+                <!-- Matriz Comparativa Institucional -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Matriz de Clasificación Estructural, Funcional y Correlación Clínica</h3>
+                    
+                    <div class="overflow-x-auto custom-scroll border border-gray-200 rounded-xl">
+                        <table class="w-full text-left text-xs min-w-[620px]">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700 border-b border-gray-200">
+                                    <th class="p-3 font-bold">Familia</th>
+                                    <th class="p-3 font-bold">Monómero Fundamental</th>
+                                    <th class="p-3 font-bold">Enlace Característico</th>
+                                    <th class="p-3 font-bold">Función Primaria</th>
+                                    <th class="p-3 font-bold">Correlación Médica (UCCuyo)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-accent-light/40 transition">
+                                    <td class="p-3 font-bold text-accent">Carbohidratos</td>
+                                    <td class="p-3 font-medium">Monosacáridos (ej. D-glucosa)</td>
+                                    <td class="p-3 font-mono">Glucosídico ($\alpha$ o $\beta$)</td>
+                                    <td class="p-3">Energía rápida y reconocimiento celular</td>
+                                    <td class="p-3 font-semibold text-rose-700">Diabetes Mellitus (Hiperglucemia y cetogénesis)</td>
+                                </tr>
+                                <tr class="hover:bg-accent-light/40 transition">
+                                    <td class="p-3 font-bold text-accent">Lípidos</td>
+                                    <td class="p-3 font-medium">Ácidos grasos / Glicerol / Esteroles</td>
+                                    <td class="p-3 font-mono">Éster (o apolar no covalente)</td>
+                                    <td class="p-3">Reserva calórica y bicapas de membrana</td>
+                                    <td class="p-3 font-semibold text-rose-700">Arteriosclerosis (Placas de ateroma y estenosis)</td>
+                                </tr>
+                                <tr class="hover:bg-accent-light/40 transition">
+                                    <td class="p-3 font-bold text-accent">Proteínas</td>
+                                    <td class="p-3 font-medium">$20$ $\alpha$-aminoácidos estándar</td>
+                                    <td class="p-3 font-mono">Peptídico ($-\text{CO}-\text{NH}-$)</td>
+                                    <td class="p-3">Catálisis enzimática, sostén y transporte</td>
+                                    <td class="p-3 font-semibold text-rose-700">Anemia Falciforme ($\text{Glu} \to \text{Val}$ en $\beta$-globina)</td>
+                                </tr>
+                                <tr class="hover:bg-accent-light/40 transition">
+                                    <td class="p-3 font-bold text-accent">Ácidos Nucleicos</td>
+                                    <td class="p-3 font-medium">Nucleótidos (Base, Pentosa, Fosfato)</td>
+                                    <td class="p-3 font-mono">$3'-5'$ Fosfodiéster y Puentes $H$</td>
+                                    <td class="p-3">Almacenamiento y expresión génica</td>
+                                    <td class="p-3 font-semibold text-rose-700">Mutaciones génicas y errores congénitos</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Canvas Mod 2: Matriz Acuosa & Autoensamblaje -->
+                    <div class="relative w-full h-[400px] rounded-xl overflow-hidden bg-slate-900 shadow-inner flex items-center justify-center mt-4">
+                        <canvas id="canvasModule2" class="w-full h-full cursor-pointer"></canvas>
+                    </div>
+                    <div class="bg-white/95 border border-gray-200 p-2.5 rounded-xl text-xs shadow-sm flex items-center gap-2">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent flex-shrink-0"></span>
+                        <span id="m2-canvas-legend" class="font-bold text-accent">Matriz Biofísica del Agua: Dipolos permanentes de H₂O formando puentes de hidrógeno, solvatando iones y forzando el efecto hidrofóbico.</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 text-xs text-gray-700 leading-relaxed">
+                            <strong class="text-gray-900 block mb-1">Efecto Hidrofóbico y Membranas:</strong>
+                            El agua obliga a los lípidos anfipáticos a esconder sus colas hidrocarbonadas apolares en el interior de bicapas lipídicas, generando el recinto estanco donde tienen lugar las reacciones metabólicas.
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200 text-xs text-gray-700 leading-relaxed">
+                            <strong class="text-gray-900 block mb-1">Fuerzas Débiles y Conformación Nativa:</strong>
+                            Las macromoléculas no dependen solo de enlaces covalentes: puentes de hidrógeno, interacciones electrostáticas y fuerzas de dispersión mantienen la conformación activa de proteínas y la doble hélice del ADN.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 3: FAMILIAS & ANEMIA FALCIFORME ==================== -->
+            <section id="module-3" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md border border-accent/20">Módulo 3</span>
+                            <h2 class="text-xl font-bold text-gray-800 mt-1">Análisis Profundo por Familias y Casos Moleculares</h2>
+                        </div>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-xl border border-slate-200">
+                            Eje Estructura $\to$ Propiedad $\to$ Función
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Examine la estereoisomería de la serie D, la patogenia del ateroma, los niveles estructurales de las proteínas, el enlace $3'-5'$ fosfodiéster y el simulador interactivo de la Anemia Falciforme.
+                    </p>
+                </div>
+
+                <!-- Selector de Subfamilias -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Laboratorio Molecular Interactivo</h3>
+                            <span class="text-xs text-gray-500">Seleccione la familia molecular para cargar la simulación gráfica Canvas:</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="setMod3Sub('carb')" id="btn-m3-carb" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Carbohidratos (Serie D)</button>
+                            <button onclick="setMod3Sub('lip')" id="btn-m3-lip" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Lípidos & Ateroma</button>
+                            <button onclick="setMod3Sub('prot')" id="btn-m3-prot" class="px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm">Proteínas & Falcemia</button>
+                            <button onclick="setMod3Sub('nuc')" id="btn-m3-nuc" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Ácidos Nucleicos ($3'-5'$)</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Mod 3 -->
+                    <div class="relative w-full h-[420px] rounded-xl overflow-hidden bg-slate-900 shadow-inner flex items-center justify-center">
+                        <canvas id="canvasModule3" class="w-full h-full cursor-pointer"></canvas>
+                    </div>
+                    <div class="bg-white/95 border border-gray-200 p-2.5 rounded-xl text-xs shadow-sm flex items-center gap-2">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent flex-shrink-0"></span>
+                        <span id="m3-canvas-legend" class="font-bold text-accent">Anemia Falciforme: Mutación puntual $\text{Glu6Val}$ en la cadena $\beta$-globina provocando polímeros rígidos y eritrocitos en hoz.</span>
+                    </div>
+
+                    <!-- Panel de Controles Específicos para el Caso Clínico de Anemia Falciforme -->
+                    <div id="m3-extra-controls" class="p-4 bg-gray-50 rounded-xl border border-gray-200 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <span class="text-xs font-bold text-gray-800">Control de Oxigenación Tisular / Estado Mutacional:</span>
+                            <div class="flex gap-2">
+                                <button onclick="setHbMutation('normal')" id="btn-hb-normal" class="px-3 py-1 rounded-lg text-xs font-bold bg-sky-600 text-white transition">HbA (Glutámico - Soluble)</button>
+                                <button onclick="setHbMutation('falciforme')" id="btn-hb-falciforme" class="px-3 py-1 rounded-lg text-xs font-bold bg-rose-600 text-white transition">HbS (Valina - Falcemia)</button>
+                            </div>
+                        </div>
+                        <p id="m3-desc-box" class="text-xs text-gray-600 leading-relaxed">
+                            El <strong>ácido glutámico</strong> es un aminoácido hidrofílico con carga negativa a pH fisiológico, soluble en el estroma globular. Al mutar por <strong>valina</strong> (apolar e hidrofóbica), se genera un parche hidrofóbico pegajoso que polimeriza las tetrámeros desoxigenados de hemoglobina, forzando la falciformación y oclusión microvascular.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 4: GEOGRAFÍA & METABOLISMO ==================== -->
+            <section id="module-4" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md border border-accent/20">Módulo 4</span>
+                            <h2 class="text-xl font-bold text-gray-800 mt-1">Geografía Celular y Metabolismo Intermediario</h2>
+                        </div>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-xl border border-slate-200">
+                            Convergencia en Acetil-$\text{CoA}$
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Las rutas catabólicas de carbohidratos (glucólisis), lípidos ($\beta$-oxidación) y proteínas (desaminación) convergen en el acetil-$\text{CoA}$ mitocondrial para ingresar al ciclo del ácido cítrico y producir $\text{ATP}$ por fosforilación oxidativa.
+                    </p>
+                </div>
+
+                <!-- Canvas y Controles Módulo 4 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Mapa Dinámico Subcelular & Flujo Metabólico</h3>
+                            <span class="text-xs text-gray-500">Seleccione el sustrato para visualizar su recorrido celular y destino energético:</span>
+                        </div>
+                        <div class="flex flex-wrap gap-1.5">
+                            <button onclick="setMod4Path('glucosa')" id="btn-m4-glucosa" class="px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm">Glucólisis (Glucosa)</button>
+                            <button onclick="setMod4Path('lipidos')" id="btn-m4-lipidos" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">$\beta$-Oxidación (Ácidos Grasos)</button>
+                            <button onclick="setMod4Path('proteinas')" id="btn-m4-proteinas" class="px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition">Proteólisis (Aminoácidos)</button>
+                            <button onclick="setMod4Path('diabetes')" id="btn-m4-diabetes" class="px-3.5 py-1.5 rounded-xl bg-rose-100 text-rose-800 text-xs font-bold hover:bg-rose-200 transition">Cetoacidosis Diabética</button>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Mod 4 -->
+                    <div class="relative w-full h-[420px] rounded-xl overflow-hidden bg-slate-900 shadow-inner flex items-center justify-center">
+                        <canvas id="canvasModule4" class="w-full h-full cursor-pointer"></canvas>
+                    </div>
+                    <div class="bg-white/95 border border-gray-200 p-2.5 rounded-xl text-xs shadow-sm flex items-center gap-2">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-accent flex-shrink-0"></span>
+                        <span id="m4-canvas-legend" class="font-bold text-accent">Glucólisis citosólica convirtiendo glucosa en piruvato, que ingresa a la mitocondria como Acetil-CoA.</span>
+                    </div>
+
+                    <div id="m4-desc-card" class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-xs text-gray-700 leading-relaxed">
+                        <strong class="text-gray-900 block mb-1">Ruta Citosólica a Mitocondrial:</strong>
+                        La glucosa se escinde en dos moléculas de piruvato en el citosol. El complejo piruvato deshidrogenasa mitocondrial lo transforma en Acetil-$\text{CoA}$, alimentando el ciclo de Krebs con producción neta de $\text{NADH}$, $\text{FADH}_2$ y fosforilación oxidativa de $\text{ATP}$.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 5: SÍNTESIS & LABORATORIO ==================== -->
+            <section id="module-5" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent bg-accent-light px-2.5 py-1 rounded-md border border-accent/20">Módulo 5</span>
+                            <h2 class="text-xl font-bold text-gray-800 mt-1">Síntesis Integradora y Laboratorio Clínico</h2>
+                        </div>
+                        <span class="text-xs bg-slate-100 text-slate-700 font-semibold px-3 py-1.5 rounded-xl border border-slate-200">
+                            Razonamiento Médico UCCuyo
+                        </span>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed">
+                        Integre el eje fundamental de la materia viva: los ácidos nucleicos codifican, las proteínas ejecutan, los carbohidratos aportan combustible inmediato y los lípidos erigen recintos biológicos.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Eje Unificador -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 space-y-3">
+                        <h3 class="font-bold text-gray-800 text-sm uppercase tracking-wide">Eje Integrador de la Materia Viva</h3>
+                        
+                        <div class="space-y-2 text-xs">
+                            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3">
+                                <span class="w-7 h-7 rounded-lg bg-accent text-white font-bold flex items-center justify-center shrink-0">1</span>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Ácidos Nucleicos (Información)</h4>
+                                    <p class="text-gray-600">Almacenan y transmiten el programa genético celular ($ADN \to ARN$).</p>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3">
+                                <span class="w-7 h-7 rounded-lg bg-accent text-white font-bold flex items-center justify-center shrink-0">2</span>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Proteínas (Ejecución)</h4>
+                                    <p class="text-gray-600">Catálisis enzimática, motilidad, señalización y transporte membranario.</p>
+                                </div>
+                            </div>
+                            <div class="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3">
+                                <span class="w-7 h-7 rounded-lg bg-accent text-white font-bold flex items-center justify-center shrink-0">3</span>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Carbohidratos & Lípidos (Sustento y Límites)</h4>
+                                    <p class="text-gray-600">Monómeros combustibles para generar $\text{ATP}$ y lípidos para delimitar compartimentos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Laboratorio de Preguntas Clínicas Guiadas -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-sm uppercase tracking-wide mb-1">Laboratorio de Razonamiento Clínico</h3>
+                            <p class="text-xs text-gray-500 mb-3">Seleccione una consulta médica interactiva para desplegar su análisis bioquímico:</p>
+                            
+                            <div class="space-y-2">
+                                <button onclick="showClinicalCase(1)" id="btn-case-1" class="w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-accent-light border border-gray-200 text-xs font-semibold transition text-gray-800">
+                                    💊 Caso A: Toxicidad de Lípidos Puros Intravenosos
+                                </button>
+                                <button onclick="showClinicalCase(2)" id="btn-case-2" class="w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-accent-light border border-gray-200 text-xs font-semibold transition text-gray-800">
+                                    🧬 Caso B: Diversidad proteica a partir de solo 20 aminoácidos
+                                </button>
+                                <button onclick="showClinicalCase(3)" id="btn-case-3" class="w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-accent-light border border-gray-200 text-xs font-semibold transition text-gray-800">
+                                    🌡️ Caso C: Fiebres superiores a $42^\circ\text{C}$ y colapso cerebral
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="clinical-result-box" class="p-4 bg-accent-light rounded-xl border border-accent/20 text-xs text-gray-800 space-y-1">
+                            <span id="case-title" class="font-bold text-accent block text-sm">Seleccione un caso clínico superior</span>
+                            <p id="case-text" class="text-gray-700 leading-relaxed">
+                                El análisis fundamentado con conceptos de biofísica y solubilidad se desplegará aquí para afianzar el aprendizaje.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer class="bg-white border-t border-gray-200 py-4 mt-8 text-center text-xs text-gray-500">
+        Desarrollado por vesalio - Todos los derechos reservados
+    </footer>
+
+    <!-- MODAL: GUÍA DE USO -->
+    <div id="tutorial-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    <h3 class="text-base font-bold text-gray-800 uppercase tracking-wide">Guía de Uso del Simulador</h3>
+                </div>
+                <button onclick="closeTutorial()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-4 text-xs text-gray-600 leading-relaxed">
+                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                    <span class="font-bold text-gray-800 text-xs block mb-1">Propósito Pedagógico (Curso de Ingreso a Medicina - UCCuyo):</span>
+                    Este simulador interactivo permite explorar los fundamentos fisicoquímicos y metabólicos indispensables para la práctica médica: la tetravalencia del carbono ($sp^3$) y la modulación de polaridad/carga por grupos funcionales; el agua como matriz (~$75\%$ corporal) y el autoensamblaje anfipático por efecto hidrofóbico; la estructura, función y correlaciones clínicas de las 4 familias de biomoléculas (incluyendo el simulador dinámico de la Anemia Falciforme); la compartimentación celular con convergencia catabólica en Acetil-$\text{CoA}$ y cetoacidosis; y un laboratorio interactivo de resolución de casos clínicos.
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">1. Módulo 1: Carbono y Grupos Funcionales (Andamiaje & Personalidad)</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Tetravalencia y Geometría Tetraédrica ($sp^3$):</strong> Visualice el andamiaje tridimensional del carbono central con su ángulo característico de $109.5^\circ$ y enlaces en cuña/trazo continuo.</li>
+                        <li><strong>Selector Dinámico de Grupos Funcionales:</strong> Alterne entre <em>Metano ($CH_4$)</em>, <em>Grupo Amino ($-NH_3^+$)</em>, <em>Grupo Carboxilo ($-COO^-$)</em> y <em>Grupo Hidroxilo ($-OH$)</em> para observar en tiempo real los cambios en la polaridad, estado de ionización a pH fisiológico ($7.4$) e interacción con el solvente.</li>
+                        <li><strong>Microambiente Acuoso y Puentes de Hidrógeno:</strong> Examine las moléculas de agua circundantes con sus dipolos de carga parcial ($\delta^+ / \delta^-$) y líneas discontinuas de solvatación electrostática frente a grupos hidrofóbicos.</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">2. Módulo 2: Contexto Biofísico y Matriz de Biomoléculas</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Canvas Interactivo de Efecto Hidrofóbico:</strong> Representación gráfica del agua como solvente universal (~$75\%$ corporal) forzando el autoensamblaje de lípidos anfipáticos en micela/bicapa, exponiendo las cabezas polares hidratadas y aislando las colas apolares en el núcleo hidrofóbico.</li>
+                        <li><strong>Matriz Comparativa de las 4 Familias:</strong> Tabla de correlación inmediata que sintetiza monómeros, enlaces químicos característicos, roles biológicos y asociaciones fisiopatológicas clave (Diabetes Mellitus, Arteriosclerosis, Anemia Falciforme y Mutaciones Génicas).</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">3. Módulo 3: Análisis Profundo por Familias de Biomoléculas</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Selector de 4 Familias Moleculares:</strong> Alterne entre las pestañas dedicadas a <em>Proteínas & Caso Clínico</em>, <em>Carbohidratos</em>, <em>Lípidos</em> y <em>Ácidos Nucleicos</em>.</li>
+                        <li><strong>Simulador Molecular de Anemia Falciforme (Fisiopatología):</strong>
+                            <ul class="list-disc list-inside ml-4 space-y-0.5 text-gray-500">
+                                <li><em>HbA Normal:</em> Eritrocitos bicóncavos en 3D flexibles con $\text{Glu6}$ polar soluble, garantizando flujo laminar continuo por el capilar sanguíneo sin adherencias.</li>
+                                <li><em>HbS Falciforme:</em> Mutación puntual $\text{Glu6Val}$ con 'parche' hidrofóbico, polimerización en fibras rígidas, deformación en hoz (*drepanocito*) y atrapamiento oclusivo en el lecho vascular con isquemia distal.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Carbohidratos y Estereoisomería Serie D:</strong> Esquema tridimensional de D-Glucosa destacando la orientación del $-OH$ en $C_5$ hacia la derecha y la especificidad enzimática celular absoluta.</li>
+                        <li><strong>Lípidos y Estabilidad de Membranas:</strong> Bicapa fosfolipídica con núcleos esteroidales rígidos de colesterol intercalados y relación con la formación de placas de ateroma.</li>
+                        <li><strong>Ácidos Nucleicos y Enlaces $3'-5'$:</strong> Representación del esqueleto fosfodiéster, anillo furanósico de pentosa y complementariedad de bases nitrogenadas ($A=T$) unidas por puentes de hidrógeno.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">4. Módulo 4: Geografía Celular & Red del Metabolismo Intermediario</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Mapa Celular Integrado:</strong> Anatomía funcional que ilustra el Núcleo (almacén y transcripción), Citosol (glucólisis) y la Mitocondria con doble membrana y matriz energética.</li>
+                        <li><strong>Selector de Vías Catabólicas:</strong> Trace interactivamente la degradación de <em>Glucosa (Glucólisis)</em>, <em>Ácidos Grasos ($\beta$-oxidación)</em> y <em>Proteínas (Proteólisis)</em> convergiendo en la encrucijada del <strong>Acetil-$\text{CoA}$</strong> hacia el Ciclo de Krebs y la Cadena Respiratoria.</li>
+                        <li><strong>Correlación Fisiopatológica en Diabetes Mellitus:</strong> Simulación de la descompensación metabólica donde la lipólisis desmedida satura el Ciclo de Krebs y desvía el exceso de Acetil-$\text{CoA}$ hacia la síntesis de cuerpos cetónicos y cetoacidosis diabética.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">5. Módulo 5: Síntesis Integradora & Laboratorio de Preguntas Clínicas</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Eje Estructura $\to$ Propiedad $\to$ Función:</strong> Cuadro sinóptico de articulación entre los 4 pilares macromoleculares.</li>
+                        <li><strong>Laboratorio de Preguntas Clínicas Interactivas:</strong> Sistema de autoevaluación guiada con botones de análisis biofísico y fundamentación clínica desplegable:
+                            <ul class="list-disc list-inside ml-4 space-y-0.5 text-gray-500">
+                                <li><em>Caso 1:</em> Toxicidad y embolismo graso por infusión IV pura de lípidos insolubles.</li>
+                                <li><em>Caso 2:</em> Diversidad biológica combinatoria a partir de $20$ $\alpha$-aminoácidos ($20^n$).</li>
+                                <li><em>Caso 3:</em> Daño cerebral irreversible por desnaturalización proteica térmica ($> 42^\circ\text{C}$).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t flex justify-end">
+                <button onclick="closeTutorial()" class="px-5 py-2 bg-accent text-white text-xs font-semibold rounded-xl hover:bg-accent-hover transition shadow-sm">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script del Simulador -->
+    <script>
+        let currentTab = 1;
+        let mod1Sub = 'metano';
+        let mod3Sub = 'prot';
+        let hbState = 'normal'; // 'normal' o 'falciforme'
+        let mod4Path = 'glucosa';
+
+        // Modal Tutorial
+        function openTutorial() {
+            document.getElementById('tutorial-modal').classList.remove('hidden');
+        }
+        function closeTutorial() {
+            document.getElementById('tutorial-modal').classList.add('hidden');
+        }
+
+        // Navegación de Pestañas
+        function switchTab(tabIndex) {
+            currentTab = tabIndex;
+            for (let i = 1; i <= 5; i++) {
+                const sec = document.getElementById(`module-${i}`);
+                const btn = document.getElementById(`btn-tab-${i}`);
+                if (i === tabIndex) {
+                    sec.classList.remove('hidden');
+                    btn.className = "bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition shadow-sm";
+                } else {
+                    sec.classList.add('hidden');
+                    btn.className = "text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition";
+                }
+            }
+            renderKaTeX();
+            renderCanvas();
+        }
+
+        function renderKaTeX() {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '$', right: '$', display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // ==================== MÓDULO 1: LOGIC ====================
+        function setMod1Sub(type) {
+            mod1Sub = type;
+            const buttons = ['metano', 'amino', 'carboxilo', 'alcohol'];
+            buttons.forEach(b => {
+                const btn = document.getElementById(`btn-m1-${b}`);
+                if (b === type) {
+                    btn.className = "px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition";
+                }
+            });
+
+            const legend = document.getElementById('m1-canvas-legend');
+            const polText = document.getElementById('m1-pol-text');
+            const chargeText = document.getElementById('m1-charge-text');
+            const waterText = document.getElementById('m1-water-text');
+
+            if (type === 'metano') {
+                legend.textContent = "Metano (CH4): Molécula apolar simétrica. Interacciones de Van der Waals débiles e hidrofobia.";
+                polText.textContent = "Nula (Apolar). Distribución de carga simétrica.";
+                chargeText.textContent = "Neutra (q = 0) a cualquier pH biológico.";
+                waterText.textContent = "Insoluble. Excluido por los puentes de hidrógeno del agua.";
+            } else if (type === 'amino') {
+                legend.textContent = "Grupo Amino (-NH2 / -NH3+): Comportamiento básico. Ionizado positivamente a pH fisiológico 7.4.";
+                polText.textContent = "Alta polaridad. Par electrónico libre y enlace N-H polar.";
+                chargeText.textContent = "Positiva (+1 a pH 7.4 en su forma -NH3+).";
+                waterText.textContent = "Muy hidrofílico. Forma puentes de H e interacciones carga-dipolo.";
+            } else if (type === 'carboxilo') {
+                legend.textContent = "Grupo Carboxilo (-COOH / -COO-): Comportamiento ácido. Carga negativa a pH fisiológico 7.4.";
+                polText.textContent = "Muy Alta. Resonancia del anión carboxilato.";
+                chargeText.textContent = "Negativa (-1 a pH 7.4 en su forma -COO-).";
+                waterText.textContent = "Altamente soluble. Fuerte solvatación con moléculas de agua.";
+            } else {
+                legend.textContent = "Grupo Hidroxilo (-OH): Fuertemente polar por electronegatividad del Oxígeno. Altísima solvatación.";
+                polText.textContent = "Muy Alta. Momento dipolar O-H marcado.";
+                chargeText.textContent = "Neutra (No se ioniza a pH 7.4 fisiológico).";
+                waterText.textContent = "Extremadamente hidrofílico (múltiples puentes de H con agua).";
+            }
+
+            renderCanvas();
+            renderKaTeX();
+        }
+
+        // ==================== MÓDULO 3: LOGIC ====================
+        function setMod3Sub(sub) {
+            mod3Sub = sub;
+            ['carb', 'lip', 'prot', 'nuc'].forEach(s => {
+                const btn = document.getElementById(`btn-m3-${s}`);
+                if (s === sub) {
+                    btn.className = "px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition";
+                }
+            });
+
+            const extra = document.getElementById('m3-extra-controls');
+            const legend = document.getElementById('m3-canvas-legend');
+            const desc = document.getElementById('m3-desc-box');
+
+            if (sub === 'prot') {
+                extra.classList.remove('hidden');
+                legend.textContent = "Anemia Falciforme: Mutación puntual Glu6Val en la cadena beta-globina provocando polímeros rígidos y eritrocitos en hoz.";
+                desc.innerHTML = `El <strong>ácido glutámico</strong> es polar con carga negativa a pH fisiológico. Al mutar por <strong>valina</strong> (apolar), se expone un parche hidrofóbico pegajoso que polimeriza las tetrámeros desoxigenados de hemoglobina, forzando la falciformación y oclusión microvascular.`;
+            } else {
+                extra.classList.add('hidden');
+                if (sub === 'carb') {
+                    legend.textContent = "Carbohidratos y Estereoisomería: Especificidad enzimática absoluta por los isómeros de la Serie D (D-glucosa).";
+                } else if (sub === 'lip') {
+                    legend.textContent = "Lípidos y Ateroma: Formación de bicapa lipídica anfipática y patogenia de la placa de ateroma arterial.";
+                } else {
+                    legend.textContent = "Ácidos Nucleicos: Enlace 3'-5' fosfodiéster y complementariedad de bases por puentes de hidrógeno.";
+                }
+            }
+
+            renderCanvas();
+            renderKaTeX();
+        }
+
+        function setHbMutation(st) {
+            hbState = st;
+            const btnNorm = document.getElementById('btn-hb-normal');
+            const btnFalc = document.getElementById('btn-hb-falciforme');
+            const legend = document.getElementById('m3-canvas-legend');
+
+            if (st === 'normal') {
+                btnNorm.className = "px-3 py-1 rounded-lg text-xs font-bold bg-sky-600 text-white transition shadow-sm";
+                btnFalc.className = "px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 text-gray-700 transition";
+                legend.textContent = "Hemoglobina Normal (HbA): Ácido glutámico polar expuesto al solvente. Eritrocito flexible bicóncavo sin polimerización.";
+            } else {
+                btnNorm.className = "px-3 py-1 rounded-lg text-xs font-bold bg-gray-200 text-gray-700 transition";
+                btnFalc.className = "px-3 py-1 rounded-lg text-xs font-bold bg-rose-600 text-white transition shadow-sm";
+                legend.textContent = "Hemoglobina Falciforme (HbS): Valina apolar expuesta que encaja en bolsillo hidrofóbico, formando polímeros y hematíes en hoz.";
+            }
+            renderCanvas();
+        }
+
+        // ==================== MÓDULO 4: LOGIC ====================
+        function setMod4Path(path) {
+            mod4Path = path;
+            ['glucosa', 'lipidos', 'proteinas', 'diabetes'].forEach(p => {
+                const btn = document.getElementById(`btn-m4-${p}`);
+                if (p === path) {
+                    btn.className = (p === 'diabetes') 
+                        ? "px-3.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-bold transition shadow-sm"
+                        : "px-3.5 py-1.5 rounded-xl bg-accent text-white text-xs font-bold transition shadow-sm";
+                } else {
+                    btn.className = (p === 'diabetes')
+                        ? "px-3.5 py-1.5 rounded-xl bg-rose-100 text-rose-800 text-xs font-bold hover:bg-rose-200 transition"
+                        : "px-3.5 py-1.5 rounded-xl bg-gray-100 text-gray-700 text-xs font-bold hover:bg-gray-200 transition";
+                }
+            });
+
+            const legend = document.getElementById('m4-canvas-legend');
+            const desc = document.getElementById('m4-desc-card');
+
+            if (path === 'glucosa') {
+                legend.textContent = "Glucólisis citosólica convirtiendo glucosa en piruvato, que ingresa a la mitocondria como Acetil-CoA.";
+                desc.innerHTML = `<strong class="text-gray-900 block mb-1">Ruta Citosólica a Mitocondrial:</strong>La glucosa se escinde en 2 moléculas de piruvato en el citosol. El complejo piruvato deshidrogenasa lo transforma en Acetil-CoA en la matriz mitocondrial para el ciclo de Krebs.`;
+            } else if (path === 'lipidos') {
+                legend.textContent = "Beta-Oxidación mitocondrial: Degradación de ácidos grasos liberando unidades de dos carbonos (Acetil-CoA).";
+                desc.innerHTML = `<strong class="text-gray-900 block mb-1">Catabolismo Lipídico:</strong>Los ácidos grasos se activan con CoA y entran a la matriz mitocondrial mediante la lanzadera de carnitina, fragmentándose en Acetil-CoA con alto rendimiento de ATP.`;
+            } else if (path === 'proteinas') {
+                legend.textContent = "Proteólisis y Desaminación: Los esqueletos carbonados de aminoácidos entran al ciclo de Krebs y Acetil-CoA.";
+                desc.innerHTML = `<strong class="text-gray-900 block mb-1">Destino de Aminoácidos:</strong>Tras la remoción del grupo amino (ciclo de la urea hepático), los esqueletos hidrocarbonados se transforman en piruvato, Acetil-CoA o intermediarios del ciclo de Krebs.`;
+            } else {
+                legend.textContent = "Cetoacidosis Diabética: Falta de insulina -> Lipólisis masiva -> Exceso de Acetil-CoA derivado a Cuerpos Cetónicos.";
+                desc.innerHTML = `<strong class="text-rose-800 block mb-1">Fisiopatología de la Cetoacidosis:</strong>En ausencia de glucosa intracelular, el hígado oxida grasas masivamente. El exceso de Acetil-CoA satura el ciclo de Krebs y se desvía a la cetogénesis (acetoacetato y beta-hidroxibutirato), acidificando el plasma.`;
+            }
+
+            renderCanvas();
+            renderKaTeX();
+        }
+
+        // ==================== MÓDULO 5: LOGIC ====================
+        const clinicalCases = {
+            1: {
+                title: "Caso A: Toxicidad de Lípidos Puros Intravenosos",
+                text: "Los lípidos puros (triglicéridos insolubles) inyectados directamente al torrente sanguíneo generan microémbolos grasos mortales. Al ser el plasma sanguíneo un medio acuoso (~75% de agua), las grasas no se disuelven y colapsan los capilares pulmonares y cerebrales. Para la nutrición parenteral clínica es imprescindible administrarlos como emulsiones lipídicas micelares estabilizadas con fosfolípidos."
+            },
+            2: {
+                title: "Caso B: Diversidad Proteica a partir de 20 Aminoácidos",
+                text: "La inmensa variedad funcional y estructural del proteoma surge de la combinatoria de secuencias. Para un polipéptido de solo 100 aminoácidos existen 20^100 secuencias posibles, superando el número de átomos del universo observable. Cada secuencia determina un plegamiento tridimensional nativo específico regido por interacciones biofísicas."
+            },
+            3: {
+                title: "Caso C: Daño Cerebral por Fiebres Superiores a 42°C",
+                text: "Temperaturas corporales mayores a 42°C rompen los débiles puentes de hidrógeno e interacciones hidrofóbicas que estabilizan la conformación terciaria y cuaternaria de las proteínas. Las enzimas cerebrales se desnaturalizan irreversiblemente, perdiendo su sitio activo y causando colapso metabólico, edema neuronal y daño encefálico permanente."
+            }
+        };
+
+        function showClinicalCase(id) {
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`btn-case-${i}`);
+                if (i === id) {
+                    btn.className = "w-full text-left p-3 rounded-xl bg-accent-light border border-accent text-xs font-bold transition text-accent shadow-xs";
+                } else {
+                    btn.className = "w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-accent-light border border-gray-200 text-xs font-semibold transition text-gray-800";
+                }
+            }
+
+            const item = clinicalCases[id];
+            document.getElementById('case-title').textContent = item.title;
+            document.getElementById('case-text').textContent = item.text;
+            renderKaTeX();
+        }
+
+        // ==================== CANVAS ENGINE ====================
+        function renderCanvas() {
+            if (currentTab === 1) renderModule1Canvas();
+            else if (currentTab === 2) renderModule2Canvas();
+            else if (currentTab === 3) renderModule3Canvas();
+            else if (currentTab === 4) renderModule4Canvas();
+        }
+
+        // Helper para etiquetas moleculares profesionales con directriz
+        function drawMoleculeTag(ctx, text, x, y, bg = 'rgba(15, 23, 42, 0.9)', textCol = '#ffffff', borderCol = 'rgba(255, 255, 255, 0.25)', tX = null, tY = null) {
+            ctx.font = '600 10.5px Outfit, sans-serif';
+            const m = ctx.measureText(text);
+            const w = m.width + 18;
+            const h = 20;
+
+            ctx.save();
+            if (tX !== null && tY !== null) {
+                ctx.strokeStyle = borderCol;
+                ctx.lineWidth = 1.2;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(x, y + (tY > y ? h / 2 : -h / 2));
+                ctx.lineTo(tX, tY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                ctx.fillStyle = borderCol;
+                ctx.beginPath();
+                ctx.arc(tX, tY, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.fillStyle = bg;
+            ctx.strokeStyle = borderCol;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.roundRect(x - w / 2, y - h / 2, w, h, 5);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = textCol;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, y);
+            ctx.restore();
+        }
+
+        // Helper para renderizar esferas atómicas con sombreado 3D / CPK
+        function drawAtom3D(ctx, x, y, r, baseColor, highlightColor = '#ffffff') {
+            ctx.save();
+            const grad = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+            grad.addColorStop(0, highlightColor);
+            grad.addColorStop(0.35, baseColor);
+            grad.addColorStop(1, '#050811');
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(x, y, r, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Canvas Módulo 1: Tetravalencia & Solvatación Biofísica 3D
+        function renderModule1Canvas() {
+            const canvas = document.getElementById('canvasModule1');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2;
+
+            // Fondo biofísico con gradiente
+            const bgGrad = ctx.createRadialGradient(cx, cy, 50, cx, cy, W * 0.7);
+            bgGrad.addColorStop(0, '#0f172a');
+            bgGrad.addColorStop(1, '#020617');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, W, H);
+
+            // Red de moléculas de agua dipolares en el solvente (~75% peso corporal)
+            const waterPositions = [
+                { x: 75, y: 80, a: 0.4 }, { x: 120, y: 160, a: -0.3 }, { x: 80, y: 280, a: 0.8 },
+                { x: 140, y: 350, a: -0.5 }, { x: W - 90, y: 90, a: -0.6 }, { x: W - 130, y: 190, a: 0.2 },
+                { x: W - 85, y: 300, a: 0.9 }, { x: W - 140, y: 360, a: -0.4 }, { x: cx - 180, y: cy - 20, a: 0.1 },
+                { x: cx + 180, y: cy + 30, a: -0.2 }
+            ];
+
+            waterPositions.forEach(w => {
+                ctx.save();
+                ctx.translate(w.x, w.y);
+                ctx.rotate(w.a);
+
+                // Oxígeno central (Rojo CPK con gradiente)
+                drawAtom3D(ctx, 0, 0, 9, '#ef4444', '#fca5a5');
+
+                // Enlaces O-H
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(0, 0); ctx.lineTo(-8, 9);
+                ctx.moveTo(0, 0); ctx.lineTo(8, 9);
+                ctx.stroke();
+
+                // Hidrógenos (Blancos)
+                drawAtom3D(ctx, -8, 9, 4.5, '#e2e8f0', '#ffffff');
+                drawAtom3D(ctx, 8, 9, 4.5, '#e2e8f0', '#ffffff');
+
+                // Delimitación de densidad dipolar parcial (δ- en O, δ+ en H)
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.7)';
+                ctx.font = '700 8px Outfit, sans-serif';
+                ctx.fillText('δ⁻', -3, -11);
+
+                ctx.fillStyle = 'rgba(56, 189, 248, 0.7)';
+                ctx.fillText('δ⁺', -14, 15);
+                ctx.fillText('δ⁺', 10, 15);
+
+                ctx.restore();
+            });
+
+            // Geometría tetraédrica del Carbono sp3 (Ángulos reales 109.5°)
+            // Vértice 1 (Superior): Grupo funcional o H
+            // Vértices 2, 3, 4: Enlaces en cuña y punteado representando perspectiva 3D
+            const bonds = [
+                { x: cx, y: cy - 90, label: 'H', r: 16, col: '#cbd5e1', isGroup: false },
+                { x: cx - 85, y: cy + 55, label: 'H', r: 14, col: '#cbd5e1', isGroup: false },
+                { x: cx + 85, y: cy + 55, label: 'H', r: 14, col: '#cbd5e1', isGroup: false },
+                { x: cx + 35, y: cy - 25, label: 'H', r: 11, col: '#94a3b8', isGroup: false } // Enlace proyectado al fondo
+            ];
+
+            // Reemplazo del sustituyente activo
+            if (mod1Sub === 'amino') {
+                bonds[0] = { x: cx, y: cy - 95, label: '-NH₃⁺', r: 24, col: '#38bdf8', isGroup: true };
+            } else if (mod1Sub === 'carboxilo') {
+                bonds[0] = { x: cx, y: cy - 95, label: '-COO⁻', r: 24, col: '#f43f5e', isGroup: true };
+            } else if (mod1Sub === 'alcohol') {
+                bonds[0] = { x: cx, y: cy - 95, label: '-OH', r: 22, col: '#10b981', isGroup: true };
+            }
+
+            // Trazado de varillas de enlace con gradientes cilíndricos
+            bonds.forEach((b, idx) => {
+                ctx.save();
+                ctx.lineWidth = (idx === 3) ? 3 : 6;
+                ctx.lineCap = 'round';
+                if (idx === 3) {
+                    ctx.setLineDash([4, 4]); // Cuña hacia atrás
+                    ctx.strokeStyle = '#475569';
+                } else if (idx === 1) {
+                    ctx.strokeStyle = '#94a3b8'; // Cuña hacia adelante
+                } else {
+                    ctx.strokeStyle = '#64748b';
+                }
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+                ctx.restore();
+
+                // Átomos periféricos
+                if (b.isGroup) {
+                    drawAtom3D(ctx, b.x, b.y, b.r, b.col, '#ffffff');
+                } else {
+                    drawAtom3D(ctx, b.x, b.y, b.r, '#94a3b8', '#f8fafc');
+                }
+
+                ctx.fillStyle = '#0f172a';
+                ctx.font = 'bold 11px JetBrains Mono, monospace';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(b.label, b.x, b.y);
+            });
+
+            // Átomo central de Carbono (sp3 gris oscuro volumétrico)
+            drawAtom3D(ctx, cx, cy, 28, '#334155', '#94a3b8');
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 18px Outfit, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('C', cx, cy);
+
+            // Nubes de solvatación e interacción con agua
+            if (mod1Sub !== 'metano') {
+                const haloCol = (mod1Sub === 'carboxilo') ? 'rgba(244, 63, 94, 0.35)' : 'rgba(56, 189, 248, 0.35)';
+                ctx.strokeStyle = haloCol;
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.arc(bonds[0].x, bonds[0].y, 42, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Líneas punteadas de puentes de hidrógeno simuladas con aguas vecinas
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(bonds[0].x - 20, bonds[0].y);
+                ctx.lineTo(cx - 95, cy - 80);
+                ctx.moveTo(bonds[0].x + 20, bonds[0].y);
+                ctx.lineTo(cx + 95, cy - 80);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            drawMoleculeTag(ctx, 'Átomo de Carbono Central (Tetraédrico - 109.5°)', cx, cy + 95, '#1e293b', '#e2e8f0', '#38bdf8', cx, cy + 28);
+            drawMoleculeTag(ctx, 'Grupo Funcional (Modula Carga y Solvatación)', cx, 32, '#1e1b4b', '#e0e7ff', '#818cf8', bonds[0].x, bonds[0].y - bonds[0].r);
+            drawMoleculeTag(ctx, 'Dipolos de H₂O (~75% peso corporal)', W - 120, 32, '#0c4a6e', '#e0f2fe', '#38bdf8');
+        }
+
+        // Canvas Módulo 2: Matriz Biofísica del Agua y Autoensamblaje Supramolecular
+        function renderModule2Canvas() {
+            const canvas = document.getElementById('canvasModule2');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2;
+
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, W, H);
+
+            // Representación dinámica: Micela / Membrana lipídica forzada por el efecto hidrofóbico del agua
+            // 1. Enrejado de agua en el exterior
+            ctx.fillStyle = 'rgba(56, 189, 248, 0.08)';
+            ctx.fillRect(0, 0, W, H);
+
+            // Trazado de bicapa / micela circular centrada
+            const rMicelle = 80;
+            const numLipids = 24;
+
+            // Centro hidrofóbico puro (colas hidrocarbonadas apolares protegidas del agua)
+            const coreGrad = ctx.createRadialGradient(cx, cy, 10, cx, cy, rMicelle - 20);
+            coreGrad.addColorStop(0, '#78350f');
+            coreGrad.addColorStop(1, '#1e1b4b');
+            ctx.fillStyle = coreGrad;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rMicelle - 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Dibujo de fosfolípidos/ácidos grasos radiales
+            for (let i = 0; i < numLipids; i++) {
+                const angle = (i / numLipids) * Math.PI * 2;
+                const headX = cx + Math.cos(angle) * rMicelle;
+                const headY = cy + Math.sin(angle) * rMicelle;
+                const tailX = cx + Math.cos(angle) * (rMicelle - 38);
+                const tailY = cy + Math.sin(angle) * (rMicelle - 38);
+
+                // Colas apolares (amarillas/naranjas)
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.moveTo(headX, headY);
+                ctx.lineTo(tailX, tailY);
+                ctx.stroke();
+
+                // Cabeza polar hidrofílica (azul cielo 3D)
+                drawAtom3D(ctx, headX, headY, 7.5, '#0284c7', '#7dd3fc');
+            }
+
+            // Moléculas de agua periféricas orientadas hacia las cabezas polares
+            for (let a = 0; a < Math.PI * 2; a += 0.52) {
+                const wx = cx + Math.cos(a) * (rMicelle + 35);
+                const wy = cy + Math.sin(a) * (rMicelle + 35);
+                drawAtom3D(ctx, wx, wy, 5.5, '#ef4444', '#fca5a5');
+            }
+
+            drawMoleculeTag(ctx, 'Efecto Hidrofóbico: Autoensamblaje Forzado por el Agua', cx, 32, '#065f46', '#ecfdf5', '#10b981');
+            drawMoleculeTag(ctx, 'Cabezas Polares Hidrofílicas (En contacto con H₂O)', cx - 130, cy - rMicelle, '#0369a1', '#e0f2fe', '#38bdf8', cx - 60, cy - 60);
+            drawMoleculeTag(ctx, 'Interior Apolar Hidrofóbico (Aislado de Puentes de H)', cx + 130, cy + 10, '#78350f', '#fef08a', '#eab308', cx + 20, cy);
+            drawMoleculeTag(ctx, 'Medio Acuoso Tisular (~75% peso corporal)', cx, H - 28, '#0c4a6e', '#e0f2fe', '#38bdf8');
+        }
+
+        // Canvas Módulo 3: Anemia Falciforme, Carbohidratos, Lípidos y Ácidos Nucleicos
+        function renderModule3Canvas() {
+            const canvas = document.getElementById('canvasModule3');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2;
+
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, W, H);
+
+            if (mod3Sub === 'prot') {
+                // SIMULADOR ANEMIA FALCIFORME
+                // 1. Capilar sanguíneo con endotelio celular
+                const lumenGrad = ctx.createLinearGradient(0, cy - 90, 0, cy + 90);
+                lumenGrad.addColorStop(0, '#2b0713');
+                lumenGrad.addColorStop(0.5, '#450a1a');
+                lumenGrad.addColorStop(1, '#2b0713');
+                ctx.fillStyle = lumenGrad;
+                ctx.fillRect(20, cy - 90, W - 40, 180);
+                ctx.strokeStyle = '#e11d48';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(20, cy - 90, W - 40, 180);
+
+                // Células endoteliales del vaso
+                ctx.fillStyle = '#fda4af';
+                for (let x = 35; x < W - 40; x += 45) {
+                    ctx.beginPath();
+                    ctx.ellipse(x, cy - 90, 15, 3.5, 0, 0, Math.PI * 2);
+                    ctx.ellipse(x, cy + 90, 15, 3.5, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                if (hbState === 'normal') {
+                    // HEMOGLOBINA NORMAL (HbA): Eritrocitos bicóncavos en 3D pasando libres
+                    const rbcPositions = [
+                        { x: cx - 140, y: cy, rot: 0.1 },
+                        { x: cx, y: cy - 10, rot: -0.15 },
+                        { x: cx + 130, y: cy + 8, rot: 0.05 }
+                    ];
+
+                    rbcPositions.forEach(p => {
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rot);
+
+                        // Cuerpo exterior del eritrocito con gradiente rojo sangre
+                        const rGrad = ctx.createRadialGradient(-5, -5, 10, 0, 0, 48);
+                        rGrad.addColorStop(0, '#f87171');
+                        rGrad.addColorStop(0.6, '#dc2626');
+                        rGrad.addColorStop(1, '#7f1d1d');
+                        ctx.fillStyle = rGrad;
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, 48, 28, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.strokeStyle = '#fca5a5';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Depresión bicóncava central
+                        const dGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, 22);
+                        dGrad.addColorStop(0, '#450a0a');
+                        dGrad.addColorStop(1, '#991b1b');
+                        ctx.fillStyle = dGrad;
+                        ctx.beginPath();
+                        ctx.ellipse(0, 0, 20, 11, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        ctx.restore();
+                    });
+
+                    drawMoleculeTag(ctx, 'Hemoglobina A (Normal): Ácido Glutámico polar exterior (Soluble)', cx, 32, '#065f46', '#ecfdf5', '#10b981');
+                    drawMoleculeTag(ctx, 'Eritrocito Bicóncavo Flexible', cx - 140, cy - 95, '#0369a1', '#e0f2fe', '#38bdf8', cx - 140, cy - 30);
+                    drawMoleculeTag(ctx, 'Flujo Microvascular Laminar Libre', cx, H - 28, '#1e293b', '#f8fafc', '#64748b');
+
+                } else {
+                    // HEMOGLOBINA FALCIFORME (HbS): Polimerización fibrilar rígida y eritrocito en hoz ocluyendo
+                    ctx.save();
+                    ctx.translate(cx - 20, cy);
+
+                    // Eritrocito en Hoz (Semilunar con espículas)
+                    const sGrad = ctx.createRadialGradient(-10, -10, 10, 0, 0, 60);
+                    sGrad.addColorStop(0, '#f87171');
+                    sGrad.addColorStop(0.5, '#b91c1c');
+                    sGrad.addColorStop(1, '#450a0a');
+                    ctx.fillStyle = sGrad;
+
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 56, Math.PI * 0.65, Math.PI * 1.85);
+                    ctx.quadraticCurveTo(25, -5, -30, -35);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.strokeStyle = '#fca5a5';
+                    ctx.lineWidth = 2.5;
+                    ctx.stroke();
+
+                    // Fibras de polímeros rígidos de HbS en el interior
+                    ctx.strokeStyle = '#fbbf24';
+                    ctx.lineWidth = 3.5;
+                    for (let f = -22; f <= 22; f += 9) {
+                        ctx.beginPath();
+                        ctx.moveTo(-20, f);
+                        ctx.lineTo(28, f + 14);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+
+                    // Segundo hematíe deformado atascado por detrás
+                    ctx.save();
+                    ctx.translate(cx + 95, cy + 18);
+                    ctx.fillStyle = '#7f1d1d';
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, 42, 24, -0.45, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = '#f87171';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.restore();
+
+                    drawMoleculeTag(ctx, 'Mutación Glu6Val: Parche hidrofóbico apolar pegajoso', cx, 32, '#881337', '#ffe4e6', '#f43f5e', cx - 20, cy - 40);
+                    drawMoleculeTag(ctx, 'Polímeros Rígidos de Desoxi-HbS', cx + 115, cy - 70, '#b45309', '#fef3c7', '#f59e0b', cx + 10, cy);
+                    drawMoleculeTag(ctx, 'Eritrocito en Hoz Ocluyendo Capilar (Isquemia & Dolor)', cx - 80, H - 28, '#7f1d1d', '#fee2e2', '#ef4444', cx - 20, cy + 35);
+                }
+
+            } else if (mod3Sub === 'carb') {
+                // CARBOHIDRATOS: D-GLUCOSA Y ESTEREOISOMERÍA SERIE D
+                drawMoleculeTag(ctx, 'D-Glucosa: Serie D determinada por el carbono quiral más alejado (C5)', cx, 32, '#0369a1', '#e0f2fe', '#38bdf8');
+
+                const startY = cy - 85;
+                for (let i = 0; i < 6; i++) {
+                    const y = startY + i * 32;
+
+                    // Carbono esférico 3D
+                    drawAtom3D(ctx, cx, y, 9, '#38bdf8', '#bae6fd');
+
+                    if (i < 5) {
+                        ctx.strokeStyle = '#94a3b8';
+                        ctx.lineWidth = 3.5;
+                        ctx.beginPath();
+                        ctx.moveTo(cx, y);
+                        ctx.lineTo(cx, y + 32);
+                        ctx.stroke();
+                    }
+
+                    // Etiqueta de carbono C1 a C6
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 10px JetBrains Mono, monospace';
+                    ctx.textAlign = 'right';
+                    ctx.fillText(`C${i + 1}`, cx - 18, y + 4);
+
+                    // Grupo OH lateral (C5 a la DERECHA para serie D médica)
+                    const isRight = (i === 1 || i === 3 || i === 4);
+                    const sign = isRight ? 1 : -1;
+                    const isC5 = (i === 4);
+
+                    ctx.strokeStyle = isC5 ? '#10b981' : '#cbd5e1';
+                    ctx.lineWidth = isC5 ? 3 : 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx + sign * 9, y);
+                    ctx.lineTo(cx + sign * 42, y);
+                    ctx.stroke();
+
+                    // Esfera para el grupo OH
+                    drawAtom3D(ctx, cx + sign * 46, y, 9, isC5 ? '#10b981' : '#64748b', '#ffffff');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 9px Outfit, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('OH', cx + sign * 46, y + 3);
+                }
+
+                drawMoleculeTag(ctx, 'C5: Grupo -OH hacia la DERECHA = SERIE D (Afinidad enzimática celular)', cx + 125, startY + 4 * 32, '#064e3b', '#ecfdf5', '#10b981', cx + 55, startY + 4 * 32);
+                drawMoleculeTag(ctx, 'C1 Aldehído (-CHO)', cx - 85, startY, '#1e293b', '#f8fafc', '#64748b');
+
+            } else if (mod3Sub === 'lip') {
+                // LÍPIDOS, MEMBRANAS Y ATEROMA
+                drawMoleculeTag(ctx, 'Bicapa Lipídica Anfipática y Placa de Ateroma', cx, 32, '#854d0e', '#fef9c3', '#eab308');
+
+                // Bicapa lipídica detallada
+                for (let i = 0; i < 15; i++) {
+                    const bx = cx - 170 + i * 25;
+                    // Capa superior
+                    drawAtom3D(ctx, bx, cy - 45, 8.5, '#0284c7', '#7dd3fc');
+                    ctx.strokeStyle = '#f59e0b';
+                    ctx.lineWidth = 2.2;
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 3, cy - 36); ctx.lineTo(bx - 3, cy - 10);
+                    ctx.moveTo(bx + 3, cy - 36); ctx.lineTo(bx + 3, cy - 10);
+                    ctx.stroke();
+
+                    // Capa inferior
+                    drawAtom3D(ctx, bx, cy + 45, 8.5, '#0284c7', '#7dd3fc');
+                    ctx.beginPath();
+                    ctx.moveTo(bx - 3, cy + 36); ctx.lineTo(bx - 3, cy + 10);
+                    ctx.moveTo(bx + 3, cy + 36); ctx.lineTo(bx + 3, cy + 10);
+                    ctx.stroke();
+                }
+
+                // Colesterol intercalado (núcleo esteroidal rígido)
+                ctx.fillStyle = '#f43f5e';
+                ctx.beginPath();
+                ctx.roundRect(cx - 20, cy - 16, 40, 32, 6);
+                ctx.fill();
+                ctx.strokeStyle = '#fecdd3';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                drawMoleculeTag(ctx, 'Cabezas Polares Hidrofílicas (Fosfato / Colina)', cx - 110, cy - 75, '#0369a1', '#e0f2fe', '#38bdf8', cx - 70, cy - 45);
+                drawMoleculeTag(ctx, 'Colesterol (Modula Fluidez & Precursor Hormonal)', cx, H - 28, '#881337', '#ffe4e6', '#f43f5e', cx, cy);
+                drawMoleculeTag(ctx, 'Colas de Ácidos Grasos Apolares', cx + 120, cy + 75, '#713f12', '#fef08a', '#eab308', cx + 60, cy + 20);
+
+            } else {
+                // ÁCIDOS NUCLEICOS: ENLACE 3'-5' FOSFODIÉSTER Y PUENTES DE HIDRÓGENO
+                drawMoleculeTag(ctx, 'Ácidos Nucleicos: Enlace 3\'-5\' Fosfodiéster y Puentes de Hidrógeno', cx, 32, '#3b0764', '#f3e8ff', '#a855f7');
+
+                const nucY = [cy - 50, cy + 50];
+                nucY.forEach((ny, idx) => {
+                    // Pentosa (anillo furanósico 3D)
+                    ctx.fillStyle = '#0284c7';
+                    ctx.beginPath();
+                    ctx.moveTo(cx - 35, ny - 16);
+                    ctx.lineTo(cx + 8, ny - 16);
+                    ctx.lineTo(cx + 20, ny + 12);
+                    ctx.lineTo(cx - 15, ny + 24);
+                    ctx.lineTo(cx - 45, ny + 8);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.strokeStyle = '#38bdf8';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Grupo fosfato (esfera dorada 3D)
+                    drawAtom3D(ctx, cx - 72, ny - 20, 13, '#eab308', '#fef08a');
+                    ctx.fillStyle = '#000000';
+                    ctx.font = 'bold 9px JetBrains Mono, monospace';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('P', cx - 72, ny - 17);
+
+                    // Base nitrogenada emparejada
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath();
+                    ctx.roundRect(cx + 32, ny - 12, 48, 24, 6);
+                    ctx.fill();
+                    ctx.strokeStyle = '#a7f3d0';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 12px Outfit, sans-serif';
+                    ctx.fillText(idx === 0 ? 'Adenina' : 'Timina', cx + 56, ny + 4);
+                });
+
+                // Enlace fosfodiéster 3'-5'
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(cx - 15, nucY[0] + 24); // 3' OH
+                ctx.lineTo(cx - 72, nucY[1] - 20); // 5' Fosfato
+                ctx.stroke();
+
+                // Puentes de hidrógeno (A = T)
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(cx + 56, nucY[0] + 12);
+                ctx.lineTo(cx + 56, nucY[1] - 12);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                drawMoleculeTag(ctx, 'Enlace 3\'-5\' Fosfodiéster', cx - 120, cy, '#78350f', '#fef08a', '#f59e0b', cx - 45, cy);
+                drawMoleculeTag(ctx, '2 Puentes de H (A = T)', cx + 120, cy, '#064e3b', '#ecfdf5', '#10b981', cx + 56, cy);
+            }
+        }
+
+        // Canvas Módulo 4: Geografía Celular & Red del Metabolismo Intermediario
+        function renderModule4Canvas() {
+            const canvas = document.getElementById('canvasModule4');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const W = canvas.width;
+            const H = canvas.height;
+            const cx = W / 2;
+            const cy = H / 2;
+
+            ctx.fillStyle = '#090d16';
+            ctx.fillRect(0, 0, W, H);
+
+            // Célula eucariota con membrana bilaminar
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.roundRect(25, 20, W - 50, H - 40, 28);
+            ctx.stroke();
+
+            // Citosol enriquecido
+            const cytoGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, W * 0.6);
+            cytoGrad.addColorStop(0, '#131b2e');
+            cytoGrad.addColorStop(1, '#0b1120');
+            ctx.fillStyle = cytoGrad;
+            ctx.fill();
+
+            // Núcleo celular con poros nucleares
+            const nucX = W * 0.22;
+            const nucY = cy - 25;
+            const nGrad = ctx.createRadialGradient(nucX - 10, nucY - 10, 10, nucX, nucY, 55);
+            nGrad.addColorStop(0, '#312e81');
+            nGrad.addColorStop(1, '#1e1b4b');
+            ctx.fillStyle = nGrad;
+            ctx.beginPath();
+            ctx.arc(nucX, nucY, 54, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Retículo Endoplasmático y Ribosomas
+            ctx.strokeStyle = '#6366f1';
+            ctx.lineWidth = 2;
+            for (let r = 1; r <= 3; r++) {
+                ctx.beginPath();
+                ctx.arc(nucX, nucY, 56 + r * 10, -0.4, 1.2);
+                ctx.stroke();
+            }
+
+            // Mitocondria detallada (Crestas, matriz y membrana interna)
+            const mx = W * 0.68;
+            const my = cy + 10;
+            const mGrad = ctx.createRadialGradient(mx, my, 15, mx, my, 115);
+            mGrad.addColorStop(0, '#500724');
+            mGrad.addColorStop(1, '#2a0410');
+            ctx.fillStyle = mGrad;
+            ctx.beginPath();
+            ctx.ellipse(mx, my, 115, 68, 0.15, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#f43f5e';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Crestas mitocondriales profundas
+            ctx.strokeStyle = '#fca5a5';
+            ctx.lineWidth = 2.5;
+            for (let i = -3; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.moveTo(mx + i * 24 - 12, my - 38);
+                ctx.bezierCurveTo(mx + i * 24, my - 10, mx + i * 24, my + 10, mx + i * 24 - 12, my + 38);
+                ctx.stroke();
+            }
+
+            // Rutas Metabólicas Dinámicas
+            if (mod4Path === 'glucosa') {
+                // Glucosa citosólica -> Piruvato -> Acetil-CoA en Matriz
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3.5;
+                ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                ctx.moveTo(W * 0.22 + 75, cy + 45);
+                ctx.quadraticCurveTo(cx, cy + 55, mx - 55, my);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                drawMoleculeTag(ctx, 'Glucólisis Citosólica (Glucosa -> 2 Piruvato)', W * 0.26, cy + 68, '#0369a1', '#e0f2fe', '#38bdf8');
+                drawMoleculeTag(ctx, 'Acetil-CoA -> Ciclo de Krebs (ATP + NADH)', mx, my - 88, '#991b1b', '#fee2e2', '#f87171', mx, my);
+
+            } else if (mod4Path === 'lipidos') {
+                // Ácidos grasos -> Carnitina -> Beta-oxidación mitocondrial
+                ctx.strokeStyle = '#f59e0b';
+                ctx.lineWidth = 3.5;
+                ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                ctx.moveTo(50, cy + 50);
+                ctx.lineTo(mx - 65, my + 15);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                drawMoleculeTag(ctx, 'Lanzadera de Carnitina & Beta-Oxidación Mitocondrial', mx, my - 88, '#78350f', '#fef08a', '#eab308', mx, my);
+                drawMoleculeTag(ctx, 'Ácidos Grasos de Reserva', 110, cy + 70, '#1e293b', '#f8fafc', '#64748b');
+
+            } else if (mod4Path === 'proteinas') {
+                drawMoleculeTag(ctx, 'Desaminación de Aminoácidos -> Esqueletos Carbonados', cx, 32, '#065f46', '#a7f3d0', '#10b981');
+                drawMoleculeTag(ctx, 'Convergencia en Acetil-CoA y Ciclo de Krebs', mx, my - 88, '#991b1b', '#fee2e2', '#f87171', mx, my);
+
+            } else {
+                // CETOACIDOSIS DIABÉTICA (Flujo alterado masivo hacia cuerpos cetónicos)
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.arc(mx, my, 42, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Flecha de escape de cuerpos cetónicos hacia el plasma
+                ctx.strokeStyle = '#f43f5e';
+                ctx.lineWidth = 3.5;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(mx, my + 45);
+                ctx.lineTo(mx, H - 45);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                drawMoleculeTag(ctx, 'Saturación Masiva por Exceso de Acetil-CoA', mx, my - 88, '#7f1d1d', '#fee2e2', '#ef4444', mx, my);
+                drawMoleculeTag(ctx, 'Cetogénesis Hepática: Acetoacetato y β-Hidroxibutirato', cx, H - 28, '#881337', '#ffe4e6', '#f43f5e', mx, H - 45);
+            }
+
+            drawMoleculeTag(ctx, 'Núcleo (Replicación y Transcripción ADN)', W * 0.22, cy - 95, '#1e1b4b', '#e0e7ff', '#818cf8', nucX, nucY - 50);
+            drawMoleculeTag(ctx, 'Mitocondria (Matriz y Fosforilación Oxidativa)', mx + 95, my + 68, '#450a0a', '#fee2e2', '#f43f5e', mx + 40, my + 25);
+            drawMoleculeTag(ctx, 'Membrana Celular (Bicapa Fosfolipídica)', 130, 32, '#075985', '#e0f2fe', '#38bdf8');
+        }
+
+        window.addEventListener('resize', () => renderCanvas());
+        window.addEventListener('DOMContentLoaded', () => {
+            switchTab(1);
+            setMod1Sub('metano');
+            renderKaTeX();
+        });
+    </script>
+</body>
+</html>
